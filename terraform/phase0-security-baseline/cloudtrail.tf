@@ -85,17 +85,8 @@ resource "aws_cloudtrail" "this" {
       equals = ["Management"]
     }
   }
-  advanced_event_selector {
-    name = "KMS + Secrets Manager data events"
-    field_selector {
-      field  = "eventCategory"
-      equals = ["Data"]
-    }
-    field_selector {
-      field  = "resources.type"
-      equals = ["AWS::KMS::Key", "AWS::SecretsManager::Secret"]
-    }
-  }
+  # KMS/Secrets Manager data events require additional setup — 
+  # management events capture the API calls (Decrypt, GetSecretValue) already
 
   depends_on = [aws_s3_bucket_policy.trail]
 }
